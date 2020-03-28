@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/general.html :: headOfHtml">
+
+<body>
+
+<div class="d-flex flex-column text-center">
+
+<div class="p-2">
+<h1>
+<i class="fas fa-book-reader"></i>
+ Site de la biliothèque
+</h1>
+</div>
+
+
+<p th:replace="fragments/general.html :: infoMessage" />
+
+
+<div class="p-2">
+<form name="login" action="/login">
+	
+    <legend>Connectez vous </legend>
+	<fieldset class="form-group">
+	<p>
+	<label>
+		Numéro d'adherent 
+		<input type="text" name="numeroAdherent" required="true" size="10"/>
+	</label>
+	</p>
+	<p>
+	<input type="submit" value="Valider" />	
+	</p>
+	</fieldset>
+</form>
+</div>
+</div>
+</body>
+</html>

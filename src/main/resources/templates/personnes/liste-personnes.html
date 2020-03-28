@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/general.html :: headOfHtml">
+
+<body>
+<div class="container-fluid">
+
+<nav th:replace="fragments/general.html :: navigation" />
+
+<h2>Liste des membres</h2>
+
+<p><a href="/editPersonne?newPersonne=true"><i class="fas fa-plus-square"></i>Ajouter une personne</a></p>
+
+<table class="table table-striped">
+            <thead>
+                <tr>
+                	<th> Numéro d'adhérent </th>
+                	<th> Nom </th>
+                    <th> Prenom </th>
+                    <th> Responsable </th>
+                    <th> Modifier </th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="personne :${personnes}">
+                   <td th:text="${personne.numeroAdherent}" />                 
+                   <td th:text="${personne.nom}" />
+                   <td th:text="${personne.prenom}" />                   
+                   <td><i th:if="${personne.estResponsable}" class="fas fa-crown"></i></td>
+                   <td><a th:href="@{/editPersonne(idPersonne=${personne.idPersonne})}">
+					<i class="far fa-edit fa-2x"></i>
+					</a></td>
+				</tr>
+            </tbody>
+        </table>
+
+<div th:replace="fragments/general.html :: footer" />
+
+</div>
+</body>
+</html>

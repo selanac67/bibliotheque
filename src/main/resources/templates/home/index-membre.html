@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/general.html :: headOfHtml">
+<body>
+	<div class="container-fluid">
+
+		<nav th:replace="fragments/general.html :: navigation" />
+
+		<h2 th:text="${personneSession.bibliotheque.nomBibliotheque}" />
+
+		<p>
+			Bonjour <span th:text="${personneSession.prenom}"></span> <span
+				th:text="${personneSession.nom}"></span>
+		</p>
+
+
+		<h3>
+			<i class="fas fa-book"></i> <a href="/listeLivresDTO"> Tous les
+				livres</a>
+		</h3>
+
+		<h3>
+			<i class="fas fa-shopping-bag"></i> <a href="/listerMesEmprunts">
+				Mes emprunts</a>
+		</h3>
+
+		<div th:replace="fragments/general.html :: footer" />
+
+	</div>
+</body>
+</html>

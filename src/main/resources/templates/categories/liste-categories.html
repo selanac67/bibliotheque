@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/general.html :: headOfHtml">
+<body>
+	<div class="container-fluid">
+
+		<nav th:replace="fragments/general.html :: navigation" />
+
+		<h2>Liste des categories</h2>
+
+		<p>
+			<a href="/editCategorie?new=true"> <i class="fas fa-plus-square"></i>
+				Ajouter une catégorie
+			</a>
+		</p>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Categorie</th>
+					<th>Modifier</th>
+					<th>Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="categorie :${categories}">
+					<td th:text="${categorie.idCategorie}" />
+					<td th:text="${categorie.libelleCategorie}" />
+					<td><a
+						th:remove="${personneSession.estResponsable}? none : all"
+						th:href="@{/editCategorie(idCategorie=${categorie.idCategorie})}">
+							<i class="far fa-edit fa-2x"></i>
+					</a></td>
+					<td><a
+						th:remove="${personneSession.estResponsable}? none : all"
+						th:href="@{/supprimerCategorie(idCategorie=${categorie.idCategorie})}">
+							<i class="far fa-trash-alt fa-2x"></i>
+					</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div th:replace="fragments/general.html :: footer" />
+
+	</div>
+</body>
+</html>

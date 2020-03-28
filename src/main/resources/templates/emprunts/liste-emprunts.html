@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/general.html :: headOfHtml">
+<body>
+	<div class="container-fluid">
+
+		<nav th:replace="fragments/general.html :: navigation" />
+
+		<h2 th:remove="${personneSession.estResponsable}? none : all">
+			Liste des emprunts en cours</h2>
+
+		<h2 th:remove="${personneSession.estResponsable}? all : none">
+			Mes emprunts en cours</h2>
+
+
+		<table id="empruntsEnCours" class="table table-striped">
+			<thead>
+				<tr>
+					<th colspan="2">Livre</th>
+					<th>Emprunteur</th>
+					<th>Date Emprunt</th>
+					<th></th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="emprunt :${empruntsEncours}">
+					<td><img
+						th:src="@{'/uploads/livres/'+${emprunt.livre.nomPhoto}}"
+						height="50px"
+						onerror="this.onerror=null;this.src='/uploads/livres/default-cover.png';"></td>
+					<td th:text="${emprunt.livre.titre}" />
+					<td
+						th:text="${emprunt.personne.nom} +' '+${emprunt.personne.prenom}" />
+					<td
+						th:text="${#dates.format(emprunt.dateDebutEmprunt, 'dd/MM/yy HH:mm')}" />
+
+					<td><span
+						th:remove="${personneSession.estResponsable}? none : all">
+							<a th:href="@{/retournerLivre(idEmprunt=${emprunt.idEmprunt})}">
+								<i class="far fa-undo fa-2x"></i>
+						</a>
+					</span></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<h2 th:remove="${personneSession.estResponsable}? none : all">
+			Liste des emprunts terminés</h2>
+
+		<h2 th:remove="${personneSession.estResponsable}? all : none">
+			Mes emprunts terminés</h2>
+
+		<table id="empruntsTermines" class="table table-striped">
+			<thead>
+				<tr>
+					<th colspan="2">Livre</th>
+					<th>Emprunteur</th>
+					<th>Date Emprunt</th>
+					<th>Date Fin Emprunt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="emprunt :${empruntsTermines}">
+					<td><img
+						th:src="@{'/uploads/livres/'+${emprunt.livre.nomPhoto}}"
+						height="50px"
+						onerror="this.onerror=null;this.src='/uploads/livres/default-cover.png';"></td>
+					<td th:text="${emprunt.livre.titre}" />
+					<td
+						th:text="${emprunt.personne.nom} +' '+${emprunt.personne.prenom}" />
+					<td
+						th:text="${#dates.format(emprunt.dateDebutEmprunt, 'dd/MM/yy HH:mm')}" />
+					<td
+						th:text="${#dates.format(emprunt.dateFinEmprunt, 'dd/MM/yy HH:mm')}" />
+				</tr>
+			</tbody>
+		</table>
+
+		<div th:replace="fragments/general.html :: footer" />
+
+	</div>
+	<script type="text/javascript">
+    $(document).ready(function() {
+        $('#empruntsEnCours').dataTable( {
+            "language": {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            },
+            responsive: true,
+            "columns": [
+                        { "orderable": true },
+                        { "orderable": true },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false }
+                      ]
+        } );
+        
+        $('#empruntsTermines').dataTable( {
+            "language": {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            },
+            responsive: true,
+            "columns": [
+                        { "orderable": true },
+                        { "orderable": true },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false }                      ]
+        } );
+    } );
+</script>
+	
+</body>
+</html>

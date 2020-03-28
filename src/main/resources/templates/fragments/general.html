@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headOfHtml">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    
+	<title>Bibliotheque</title>
+	
+	<!--  Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+
+	<!-- Jquery  -->
+	<script   src="http://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
+	
+	<!-- Datatables -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+
+	<!-- Boottrap js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		
+	</head>
+	
+  	<body>
+  	
+  	<div class="container-fluid">
+  	  	
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="navigation">
+	  <a class="navbar-brand" 
+	  href="/home">
+	  <i class="fas fa-book-reader"></i>
+	  <span th:text="${personneSession.prenom}"></span>
+	  </a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarNav">
+	    <ul class="navbar-nav">
+	      <li class="nav-item active"> 	
+	        <a class="nav-link" href="/listeLivresDTO">
+	        <i class="fas fa-book"></i>
+	        Livres<span class="sr-only">(current)</span>
+	        </a>
+	        
+	      </li>
+	      <li class="nav-item active" th:remove="${personneSession.estResponsable} ? none : all" >
+	        <a class="nav-link" href="/listeCategories">
+	        <i class="fas fa-socks"></i>
+	        Categories
+	        </a>
+	      </li>
+	      <li class="nav-item active" th:remove="${personneSession.estResponsable} ? none : all">
+	        <a class="nav-link" href="/listePersonnes">
+	        <i class="far fa-user-circle"></i>
+	        Membres</a>
+	      </li>
+	      <li class="nav-item active" th:remove="${personneSession.estResponsable}? none : all">
+	        <a class="nav-link" href="/listerEmprunts">
+	        <i class="fas fa-shopping-bag"></i>
+	        Emprunts</a>
+	      </li>	  
+	      
+	      <li class="nav-item active" th:remove="${personneSession.estResponsable}? all : none">
+	        <a class="nav-link" href="/listerMesEmprunts">
+	        <i class="fas fa-shopping-bag"></i>
+	        Mes emprunts</a>
+	      </li>	
+	      
+	      <li class="nav-item active">
+	        <a class="nav-link" href="/">
+	        <i class="fas fa-sign-out-alt"></i>
+	        Se déconnecter</a>
+	      </li>
+	      
+	          
+	     <!--  <li class="nav-item">
+	        <a class="nav-link disabled" href="#">Disabled</a>
+	      </li> -->
+	    </ul>
+	  </div>
+	</nav>  
+  
+  	  <div th:fragment="infoMessage" class="infoMessage alert alert-danger" role="alert"
+  	  		th:remove="*{infoMessage!=null and #strings.length(infoMessage)>0} ? none  : all ">
+  	  	<p th:text=${infoMessage} />
+  	  </div>
+  	
+  
+     <h1>Hello, world!</h1>
+     
+     
+    <div id="footer" th:fragment="footer">
+
+	</div>
+	
+	</div>
+  </body>
+</html>

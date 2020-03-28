@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/general.html :: headOfHtml">
+<body>
+	<div class="container-fluid">
+
+		<nav th:replace="fragments/general.html :: navigation" />
+
+		<h2
+			th:text="${newLivre} ? 'Ajouter un nouveau livre' : 'Modifier le livre' " />
+
+		<form th:action="@{/sauverLivre}" th:object="${livreForm}"
+			method="post" enctype="multipart/form-data">
+			<p>
+				<label> Titre du livre : <input type="text"
+					th:field="*{titre}" />
+
+				</label>
+			</p>
+			<p>
+				Catégorie : <select th:field="*{idCategorie}">
+					<option th:each="categorie: ${categories}"
+						th:value="${categorie.idCategorie}"
+						th:text="${categorie.libelleCategorie}"></option>
+				</select>
+			</p>
+			<p>
+				Note : <select th:field=="*{note}">
+				  			<option value="">à définir</option>
+  							<option value="1">1</option>
+  							<option value="2">2</option>
+  							<option value="3">3</option>
+  							<option value="4">4</option>
+						</select>
+			</p>
+
+			<p th:remove="${newLivre}? none : all">
+				Ajouter une image <input id="inputImage" name="inputImage"
+					type="file" accept="image/*">
+			</p>
+
+			<p th:remove="${newLivre}? all : none">
+				Image (non modifiable) <img
+					th:src="@{'/uploads/livres/'+*{nomPhoto}}" / width="100px">
+
+
+			</p>
+
+			<p>
+				<input type="submit" value="Valider"> <input type="hidden"
+					th:remove="${newLivre}? all : none" th:field="*{idLivreForm}">
+				<input type="hidden" th:remove="${newLivre}? all : none"
+					th:field="*{nomPhoto}">
+
+			</p>
+		</form>
+
+		<div th:replace="fragments/general.html :: footer" />
+		
+	</div>
+</body>
+</html>
