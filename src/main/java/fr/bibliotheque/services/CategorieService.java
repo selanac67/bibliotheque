@@ -20,8 +20,9 @@ public class CategorieService {
 		
 		List<Categorie> categories = new ArrayList<>();
 	
-		Iterable<Categorie> iterLivre= categorieDAO.findAll();
-		iterLivre.forEach(categories::add);		
+		Iterable<Categorie> iterCategorie= categorieDAO.findAll();
+		
+		iterCategorie.forEach(categories::add);		
 		
 		return categories;		
 	}

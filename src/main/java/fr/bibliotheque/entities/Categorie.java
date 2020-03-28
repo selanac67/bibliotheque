@@ -1,8 +1,12 @@
 package fr.bibliotheque.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Categorie {
@@ -13,7 +17,21 @@ public class Categorie {
 	private Long idCategorie;
 	
 	private String libelleCategorie;
-
+	
+	@OneToMany(mappedBy="categorie")
+	private List<Livre> livres = new ArrayList<>();
+	
+    public void addLivre(Livre livre) {
+    	livres.add(livre);
+        livre.setCategorie(this);
+    }
+ 
+    public void removeLivre(Livre livre) {
+        livres.remove(livre);
+        livre.setCategorie(null);
+    }
+	
+	
 	public Long getIdCategorie() {
 		return idCategorie;
 	}
@@ -28,6 +46,16 @@ public class Categorie {
 
 	public void setLibelleCategorie(String libelleCategorie) {
 		this.libelleCategorie = libelleCategorie;
+	}
+	
+	
+
+	public List<Livre> getLivres() {
+		return livres;
+	}
+
+	public void setLivres(List<Livre> livres) {
+		this.livres = livres;
 	}
 
 	@Override

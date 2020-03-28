@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -68,9 +69,13 @@ public class LivreService {
 
 	public void enregistrerNouveauLivre(Livre livre, MultipartFile inputImageFile)
 			throws IllegalStateException, IOException {
-
+		
+		InputStream isInputImage = null;
+		
 		// Gestion de l upload de la photo dans le cas d'un nouveau livre
-		if (inputImageFile.getResource().isFile()) {
+		if(inputImageFile.getSize()>0) {
+			isInputImage=inputImageFile.getInputStream();
+		
 			LocalDate localDate = LocalDate.now();
 			String localDateString = localDate.format(DateTimeFormatter.ISO_DATE);
 			String timestampedFileName = localDateString + "-" + inputImageFile.getOriginalFilename();
@@ -80,13 +85,17 @@ public class LivreService {
 
 			File destFile = destFileNamePath.toFile();
 
-			inputImageFile.transferTo(destFile);
+			//inputImageFile.transferTo(destFile);
 
-			resizeImage(destFile);
+			//resizeImage(destFile);
 
+			resizeImage(isInputImage,destFile);
+			
 			// Sauvegarde en base de l'objet livre
 			livre.setNomPhoto(timestampedFileName);
+		
 		}
+
 
 		livre.setDateAjout(new java.util.Date());
 
@@ -110,17 +119,23 @@ public class LivreService {
 			photo.delete();
 
 		}
-
-
 		livreDAO.delete(livre);
 
 	}
 
 	private boolean resizeImage(File imageFile) throws IOException {
 		BufferedImage image = ImageIO.read(imageFile);
-		BufferedImage resized = resize(image, 500, 500);
+		BufferedImage resized = resize(image, 200, 200);
 		return ImageIO.write(resized, "png", imageFile);
 	}
+	
+	private boolean resizeImage(InputStream imageFile, File destFile) throws IOException {
+		BufferedImage image = ImageIO.read(imageFile);
+		BufferedImage resized = resize(image, 200, 200);
+		return ImageIO.write(resized, "png", destFile);
+	}
+	
+	
 
 	private static BufferedImage resize(BufferedImage img, double maxHeight, double maxWidth) {
 

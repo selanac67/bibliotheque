@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import fr.bibliotheque.entities.Categorie;
 import fr.bibliotheque.forms.CategorieForm;
 import fr.bibliotheque.services.CategorieService;
+import fr.bibliotheque.services.LivreService;
 
 @Controller
 public class CategorieController extends BibliothequeController {
 	
 	@Autowired
 	CategorieService categorieService;
+	
+	@Autowired
+	LivreService livreService;
 	
 
 	@GetMapping("/listeCategories")
@@ -81,7 +85,12 @@ public class CategorieController extends BibliothequeController {
 		
 		Categorie categorieASupprimer = categorieService.getCategorie(idCategorie);
 		
-		categorieService.supprimerCategorie(categorieASupprimer);
+		//Vérification que la categorie ne concerne plus aucun livre 
+		if((categorieASupprimer.getLivres()).size()>0){
+			model.addAttribute("infoMessage", "Suppression impossible : le catégorie est utilisée pour au moins un livre...");
+		}else{
+			categorieService.supprimerCategorie(categorieASupprimer);
+		}
 		
 		//Refresh de la liste des categories
 		model.addAttribute("categories",categorieService.getListeCategories());
