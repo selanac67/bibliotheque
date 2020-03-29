@@ -20,21 +20,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.bibliotheque.dao.LivreDAO;
-import fr.bibliotheque.dto.LivreDTO;
+import fr.bibliotheque.dao.ProduitCulturelDAO;
+import fr.bibliotheque.dto.ProduitCulturelDTO;
+import fr.bibliotheque.entities.Jeu;
 import fr.bibliotheque.entities.Livre;
+import fr.bibliotheque.entities.ProduitCulturel;
 import storage.FileSystemStorageService;
 
 @Service
-public class LivreService {
-
-	final static String SOUS_REP_UPLOAD = "livres";
+public class ProduitCulturelService {
 
 	@Autowired
-	LivreDAO livreDAO;
+	private ProduitCulturelDAO<Livre> livreDAO;
+
+	@Autowired
+	private ProduitCulturelDAO<Jeu> jeuDAO;
+
+	@Autowired
+	private ProduitCulturelDAO<ProduitCulturel> pcDAO;
 
 	@Autowired
 	FileSystemStorageService fsStorageService;
+
+	public Optional<ProduitCulturel> getProduitCulturel(Long idProduit) {
+
+		return pcDAO.findById(idProduit);
+
+	}
 
 	public List<Livre> getListeLivres() {
 
@@ -46,16 +58,16 @@ public class LivreService {
 		return livres;
 	}
 
-	public List<LivreDTO> getLivresDTO() {
+	public List<ProduitCulturelDTO> getLivresDTO() {
 
-		List<LivreDTO> livresDTO = new ArrayList<>();
+		List<ProduitCulturelDTO> livresDTO = new ArrayList<>();
 		List<Livre> livres = new ArrayList<>();
 
 		Iterable<Livre> iterLivre = livreDAO.findAll();
 		iterLivre.forEach(livres::add);
 
 		for (Livre livre : livres) {
-			livresDTO.add(new LivreDTO(livre));
+			livresDTO.add(new ProduitCulturelDTO(livre));
 		}
 		return livresDTO;
 	}
@@ -69,57 +81,56 @@ public class LivreService {
 
 	public void enregistrerNouveauLivre(Livre livre, MultipartFile inputImageFile)
 			throws IllegalStateException, IOException {
-		
+
 		InputStream isInputImage = null;
-		
+
 		// Gestion de l upload de la photo dans le cas d'un nouveau livre
-		if(inputImageFile.getSize()>0) {
-			isInputImage=inputImageFile.getInputStream();
-		
+		if (inputImageFile.getSize() > 0) {
+			isInputImage = inputImageFile.getInputStream();
+
 			LocalDate localDate = LocalDate.now();
 			String localDateString = localDate.format(DateTimeFormatter.ISO_DATE);
 			String timestampedFileName = localDateString + "-" + inputImageFile.getOriginalFilename();
 
-			Path destFileNamePath = Paths.get(fsStorageService.getRootLocation().toString(), SOUS_REP_UPLOAD,
+			Path destFileNamePath = Paths.get(fsStorageService.getRootLocation().toString(), getSousRepUpload(),
 					timestampedFileName);
 
 			File destFile = destFileNamePath.toFile();
 
-			//inputImageFile.transferTo(destFile);
+			// inputImageFile.transferTo(destFile);
 
-			//resizeImage(destFile);
+			// resizeImage(destFile);
 
-			resizeImage(isInputImage,destFile);
-			
+			resizeImage(isInputImage, destFile);
+
 			// Sauvegarde en base de l'objet livre
 			livre.setNomPhoto(timestampedFileName);
-		
-		}
 
+		}
 
 		livre.setDateAjout(new java.util.Date());
 
 		livreDAO.save(livre);
 	}
 
-	public void majLivre(Livre livre) {
+	public void majProduitCulturel(ProduitCulturel produitCulturel) {
 
-		livreDAO.save(livre);
+		pcDAO.save(produitCulturel);
 	}
 
-	public void supprimerLivre(Livre livre) {
+	public void supprimerProduitCulturel(ProduitCulturel produitCulturel) {
 
-		String nomPhoto = livre.getNomPhoto();
+		String nomPhoto = produitCulturel.getNomPhoto();
 
 		if (nomPhoto != null) {
-			Path photoPath = Paths.get(fsStorageService.getRootLocation().toString(), SOUS_REP_UPLOAD, nomPhoto);
+			Path photoPath = Paths.get(fsStorageService.getRootLocation().toString(), getSousRepUpload(), nomPhoto);
 
 			File photo = photoPath.toFile();
 
 			photo.delete();
 
 		}
-		livreDAO.delete(livre);
+		pcDAO.delete(produitCulturel);
 
 	}
 
@@ -128,14 +139,12 @@ public class LivreService {
 		BufferedImage resized = resize(image, 200, 200);
 		return ImageIO.write(resized, "png", imageFile);
 	}
-	
+
 	private boolean resizeImage(InputStream imageFile, File destFile) throws IOException {
 		BufferedImage image = ImageIO.read(imageFile);
 		BufferedImage resized = resize(image, 200, 200);
 		return ImageIO.write(resized, "png", destFile);
 	}
-	
-	
 
 	private static BufferedImage resize(BufferedImage img, double maxHeight, double maxWidth) {
 
@@ -161,6 +170,12 @@ public class LivreService {
 		g2d.drawImage(tmp, 0, 0, null);
 		g2d.dispose();
 		return resized;
+	}
+
+	// TODO FIX
+	private String getSousRepUpload() {
+
+		return "livres";
 	}
 
 }

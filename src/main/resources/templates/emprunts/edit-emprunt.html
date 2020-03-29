@@ -7,11 +7,11 @@
 
 		<nav th:replace="fragments/general.html :: navigation" />
 
-		<h2>Emprunt d'un livre</h2>
+		<h2>Emprunt d'un produit</h2>
 
 		<form th:action="@{/sauverEmprunt}" th:object="${empruntForm}" method="get">
 			<p>
-				<label> Titre du livre :
+				<label> Titre du produit :
 				<input type="text" th:field="*{titre}" disabled />
 
 				</label>
@@ -26,7 +26,7 @@
 
 			<p>
 				<input type="submit" value="Valider">
-				<input type="hidden" th:field="*{idLivre}">
+				<input type="hidden" th:field="*{idProduit}">
 
 			</p>
 		</form>

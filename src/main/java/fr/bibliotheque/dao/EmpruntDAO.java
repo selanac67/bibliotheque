@@ -3,7 +3,7 @@ package fr.bibliotheque.dao;
 import org.springframework.stereotype.Repository;
 
 import fr.bibliotheque.entities.Emprunt;
-import fr.bibliotheque.entities.Livre;
+import fr.bibliotheque.entities.ProduitCulturel;
 import fr.bibliotheque.entities.Personne;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface EmpruntDAO extends CrudRepository<Emprunt, Long> {
 	
 	List<Emprunt> findByDateFinEmpruntIsNotNull();
 	
-	List<Emprunt> findByLivreAndDateFinEmpruntIsNull(Livre livre);
+	List<Emprunt> findByProduitCulturelAndDateFinEmpruntIsNull(ProduitCulturel produitCulturel);
 
 	
 	}

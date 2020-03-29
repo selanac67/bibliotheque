@@ -96,7 +96,7 @@ public class EmpruntService {
 		boolean kEmpruntEnCours=false;
 		
 		List<Emprunt> lstEmprunt=
-		empruntDAO.findByLivreAndDateFinEmpruntIsNull(livre);
+		empruntDAO.findByProduitCulturelAndDateFinEmpruntIsNull(livre);
 		
 		if(lstEmprunt.size()>0){
 			kEmpruntEnCours=true;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import fr.bibliotheque.dao.BibliothequeDAO;
 import fr.bibliotheque.dao.CategorieDAO;
 import fr.bibliotheque.dao.EmpruntDAO;
-import fr.bibliotheque.dao.LivreDAO;
+import fr.bibliotheque.dao.ProduitCulturelDAO;
 import fr.bibliotheque.dao.PersonneDAO;
 import fr.bibliotheque.entities.Bibliotheque;
 import fr.bibliotheque.entities.Categorie;
@@ -27,7 +27,7 @@ public class DataInit implements ApplicationRunner {
 	private CategorieDAO categorieDAO;
 
 	@Autowired
-	private LivreDAO livreDAO;
+	private ProduitCulturelDAO livreDAO;
 
 	@Autowired
 	private EmpruntDAO empruntDAO;
@@ -140,11 +140,11 @@ public class DataInit implements ApplicationRunner {
 				Emprunt emp1 = new Emprunt();
 				Emprunt emp2 = new Emprunt();
 
-				emp1.setLivre(liv1);
+				emp1.setProduitCulturel(liv1);
 				emp1.setPersonne(p3);
 				emp1.setDateDebutEmprunt(new java.util.Date());
 
-				emp2.setLivre(liv2);
+				emp2.setProduitCulturel(liv2);
 				emp2.setPersonne(p3);
 				emp2.setDateDebutEmprunt(new java.util.Date());
 

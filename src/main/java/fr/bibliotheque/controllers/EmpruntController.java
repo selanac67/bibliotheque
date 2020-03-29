@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import fr.bibliotheque.entities.Emprunt;
 import fr.bibliotheque.entities.Livre;
 import fr.bibliotheque.entities.Personne;
+import fr.bibliotheque.entities.ProduitCulturel;
 import fr.bibliotheque.forms.EmpruntForm;
 import fr.bibliotheque.services.EmpruntService;
-import fr.bibliotheque.services.LivreService;
 import fr.bibliotheque.services.PersonneService;
+import fr.bibliotheque.services.ProduitCulturelService;
 
 @Controller
 public class EmpruntController extends BibliothequeController {
@@ -25,14 +26,13 @@ public class EmpruntController extends BibliothequeController {
 	EmpruntService empruntService;
 
 	@Autowired
-	LivreService livreService;
+	ProduitCulturelService produitCulturelService;
 
 	@Autowired
 	PersonneService personneService;
 
 	@GetMapping("/listerEmprunts")
 	public String listerEmprunts(Model model) {
-
 		model.addAttribute("empruntsEncours", empruntService.getEmpruntsEncours());
 		model.addAttribute("empruntsTermines", empruntService.getEmpruntsTermines());
 
@@ -41,7 +41,6 @@ public class EmpruntController extends BibliothequeController {
 
 	@GetMapping("/listerMesEmprunts")
 	public String listerEmpruntsPersonne(Model model, @SessionAttribute("personneSession") Personne personneSession) {
-
 		model.addAttribute("empruntsEncours", empruntService.getEmpruntsEnCours(personneSession));
 		model.addAttribute("empruntsTermines", empruntService.getEmpruntsTermines(personneSession));
 
@@ -49,21 +48,20 @@ public class EmpruntController extends BibliothequeController {
 	}
 
 	@GetMapping("/sauverEmprunt")
-	public String sauverEmprunt(Model model, @RequestParam(name = "idLivre", required = true) Long idLivre,
+	public String sauverEmprunt(Model model, @RequestParam(name = "idProduit", required = true) Long idProduit,
 			@RequestParam(name = "idPersonne", required = true) Long idPersonne) throws IllegalStateException {
 
-		Livre livreAEmprunter = livreService.getLivre(idLivre);
-		Personne personneEmprunteuse = personneService.getPersonne(idPersonne);
+		ProduitCulturel produitAEmprunter = produitCulturelService.getProduitCulturel(idProduit).get();
+		Personne emprunteur = personneService.getPersonne(idPersonne);
 
 		Emprunt emprunt = new Emprunt();
-		emprunt.setLivre(livreAEmprunter);
-		emprunt.setPersonne(personneEmprunteuse);
+		emprunt.setProduitCulturel(produitAEmprunter);
+		emprunt.setPersonne(emprunteur);
 		emprunt.setDateDebutEmprunt(new Date());
-
 		empruntService.enregistrerEmprunt(emprunt);
 
-		livreAEmprunter.addEmprunt(emprunt);
-		livreService.majLivre(livreAEmprunter);
+		produitAEmprunter.addEmprunt(emprunt);
+		produitCulturelService.majProduitCulturel(produitAEmprunter);
 
 		model.addAttribute("empruntsEncours", empruntService.getEmpruntsEncours());
 		model.addAttribute("empruntsTermines", empruntService.getEmpruntsTermines());
@@ -79,7 +77,7 @@ public class EmpruntController extends BibliothequeController {
 		EmpruntForm empruntForm = new EmpruntForm();
 
 		// Cas de l'appel par un responsable		
-		Livre livreAEmprunter = livreService.getLivre(idLivre);
+		Livre livreAEmprunter = produitCulturelService.getLivre(idLivre);
 		empruntForm.setIdLivre(idLivre);
 		empruntForm.setTitre(livreAEmprunter.getTitre());
 		model.addAttribute("empruntForm", empruntForm);

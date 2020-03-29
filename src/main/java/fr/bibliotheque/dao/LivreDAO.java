@@ -1,16 +1,7 @@
 package fr.bibliotheque.dao;
 
-import org.springframework.stereotype.Repository;
-
 import fr.bibliotheque.entities.Livre;
 
-import org.springframework.data.repository.CrudRepository;
+public interface LivreDAO extends ProduitCulturelDAO<Livre> {
 
-@Repository
-public interface LivreDAO extends CrudRepository<Livre, Long> {
-	
-		  
-	}
-
-
-
+}

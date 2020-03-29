@@ -15,7 +15,7 @@ public class Emprunt {
 	private Long idEmprunt;
 	
 	@ManyToOne
-	private Livre livre;
+	private ProduitCulturel produitCulturel;
 	
 	@ManyToOne
 	private Personne personne;
@@ -33,12 +33,12 @@ public class Emprunt {
 		this.idEmprunt = idEmprunt;
 	}
 
-	public Livre getLivre() {
-		return livre;
+	public ProduitCulturel getProduitCulturel() {
+		return produitCulturel;
 	}
 
-	public void setLivre(Livre livre) {
-		this.livre = livre;
+	public void setProduitCulturel(ProduitCulturel produitCulturel) {
+		this.produitCulturel = produitCulturel;
 	}
 
 	public Personne getPersonne() {
@@ -72,8 +72,8 @@ public class Emprunt {
 		result = prime * result + ((dateDebutEmprunt == null) ? 0 : dateDebutEmprunt.hashCode());
 		result = prime * result + ((dateFinEmprunt == null) ? 0 : dateFinEmprunt.hashCode());
 		result = prime * result + ((idEmprunt == null) ? 0 : idEmprunt.hashCode());
-		result = prime * result + ((livre == null) ? 0 : livre.hashCode());
 		result = prime * result + ((personne == null) ? 0 : personne.hashCode());
+		result = prime * result + ((produitCulturel == null) ? 0 : produitCulturel.hashCode());
 		return result;
 	}
 
@@ -81,8 +81,6 @@ public class Emprunt {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
 		if (!(obj instanceof Emprunt))
 			return false;
 		Emprunt other = (Emprunt) obj;
@@ -101,18 +99,20 @@ public class Emprunt {
 				return false;
 		} else if (!idEmprunt.equals(other.idEmprunt))
 			return false;
-		if (livre == null) {
-			if (other.livre != null)
-				return false;
-		} else if (!livre.equals(other.livre))
-			return false;
 		if (personne == null) {
 			if (other.personne != null)
 				return false;
 		} else if (!personne.equals(other.personne))
 			return false;
+		if (produitCulturel == null) {
+			if (other.produitCulturel != null)
+				return false;
+		} else if (!produitCulturel.equals(other.produitCulturel))
+			return false;
 		return true;
 	}
+
+	
 	
 
 	

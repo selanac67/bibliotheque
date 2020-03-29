@@ -5,12 +5,12 @@ import java.util.List;
 
 import fr.bibliotheque.entities.Categorie;
 import fr.bibliotheque.entities.Emprunt;
-import fr.bibliotheque.entities.Livre;
+import fr.bibliotheque.entities.ProduitCulturel;
 
-public class LivreDTO {
+public class ProduitCulturelDTO {
 	
 
-	private Long idLivre;
+	private Long idProduit;
 	private String titre;
 	private Integer note;
 	private Categorie categorie;
@@ -19,15 +19,15 @@ public class LivreDTO {
 	private Date dateAjout;
 	
 	
-	 public LivreDTO(Livre livre){	
-		this.titre=livre.getTitre();
-		this.idLivre=livre.getIdLivre();
-		this.categorie=livre.getCategorie();
-		this.nomPhoto=livre.getNomPhoto();
-		this.note=livre.getNote();
-		this.dateAjout=livre.getDateAjout();
+	 public ProduitCulturelDTO(ProduitCulturel produitCulturel){	
+		this.titre=produitCulturel.getTitre();
+		this.idProduit=produitCulturel.getIdProduit();
+		this.categorie=produitCulturel.getCategorie();
+		this.nomPhoto=produitCulturel.getNomPhoto();
+		this.note=produitCulturel.getNote();
+		this.dateAjout=produitCulturel.getDateAjout();
 		
-		List<Emprunt> emprunts = livre.getEmprunts();
+		List<Emprunt> emprunts = produitCulturel.getEmprunts();
 		
 		for(Emprunt emprunt : emprunts){		
 			if(emprunt.getDateFinEmprunt()==null){
@@ -37,14 +37,18 @@ public class LivreDTO {
 		}	
 	 }
 	
-	public Long getIdLivre() {
-		return idLivre;
+
+
+	public Long getIdProduit() {
+		return idProduit;
 	}
 
 
-	public void setIdLivre(Long idLivre) {
-		this.idLivre = idLivre;
+
+	public void setIdProduit(Long idProduit) {
+		this.idProduit = idProduit;
 	}
+
 
 
 	public String getTitre() {
@@ -104,9 +108,10 @@ public class LivreDTO {
 
 	@Override
 	public String toString() {
-		return "LivreDTO [idLivre=" + idLivre + ", titre=" + titre + ", note=" + note + ", categorie=" + categorie
-				+ ", kEmprunt=" + kEmprunt + ", nomPhoto=" + nomPhoto + ", dateAjout=" + dateAjout + "]";
+		return "ProduitCulturelDTO [idLivre=" + idProduit + ", titre=" + titre + ", note=" + note + ", categorie="
+				+ categorie + ", kEmprunt=" + kEmprunt + ", nomPhoto=" + nomPhoto + ", dateAjout=" + dateAjout + "]";
 	}
+
 
 
 		

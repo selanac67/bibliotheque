@@ -4,9 +4,9 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class LivreForm {
+public class ProduitCulturelForm {
 	
-	private Long idLivreForm;	
+	private Long idProduit;	
 	
 	private Integer note;
 	
@@ -29,12 +29,12 @@ public class LivreForm {
 	@NotEmpty
 	private Long idCategorie;
 	
-	public Long getIdLivreForm() {
-		return idLivreForm;
+	public Long getIdProduitForm() {
+		return idProduit;
 	}
 
-	public void setIdLivreForm(Long idLivreForm) {
-		this.idLivreForm = idLivreForm;
+	public void setIdProduitForm(Long idLivreForm) {
+		this.idProduit = idLivreForm;
 	}
 	
 

@@ -28,10 +28,10 @@
 			<p>
 				Note : <select th:field=="*{note}">
 				  			<option value="">à définir</option>
-  							<option value="1">1</option>
-  							<option value="2">2</option>
-  							<option value="3">3</option>
-  							<option value="4">4</option>
+  							<option value="1">1*</option>
+  							<option value="2">2*</option>
+  							<option value="3">3*</option>
+  							<option value="4">4*</option>
 						</select>
 			</p>
 
@@ -49,7 +49,7 @@
 
 			<p>
 				<input type="submit" value="Valider"> <input type="hidden"
-					th:remove="${newLivre}? all : none" th:field="*{idLivreForm}">
+					th:remove="${newLivre}? all : none" th:field="*{idProduitForm}">
 				<input type="hidden" th:remove="${newLivre}? all : none"
 					th:field="*{nomPhoto}">
 

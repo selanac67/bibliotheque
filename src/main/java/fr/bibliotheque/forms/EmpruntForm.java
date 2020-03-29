@@ -2,18 +2,18 @@ package fr.bibliotheque.forms;
 
 public class EmpruntForm {
 
-	Long idLivre;
+	Long idProduit;
 	
 	String titre;
 	
 	Long idPersonne;
 
-	public Long getIdLivre() {
-		return idLivre;
+	public Long getIdProduit() {
+		return idProduit;
 	}
 
-	public void setIdLivre(Long idLivre) {
-		this.idLivre = idLivre;
+	public void setIdLivre(Long idProduit) {
+		this.idProduit = idProduit;
 	}
 
 	public String getTitre() {

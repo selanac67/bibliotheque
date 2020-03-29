@@ -16,20 +16,20 @@
 		<table id="empruntsEnCours" class="table table-striped">
 			<thead>
 				<tr>
-					<th colspan="2">Livre</th>
+					<th colspan="2">Produit</th>
 					<th>Emprunteur</th>
 					<th>Date Emprunt</th>
-					<th></th>
+					<th>Mettre fin à l'emprunt</th>
 
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="emprunt :${empruntsEncours}">
 					<td><img
-						th:src="@{'/uploads/livres/'+${emprunt.livre.nomPhoto}}"
+						th:src="@{'/uploads/livres/'+${emprunt.produitCulturel.nomPhoto}}"
 						height="50px"
 						onerror="this.onerror=null;this.src='/uploads/livres/default-cover.png';"></td>
-					<td th:text="${emprunt.livre.titre}" />
+					<td th:text="${emprunt.produitCulturel.titre}" />
 					<td
 						th:text="${emprunt.personne.nom} +' '+${emprunt.personne.prenom}" />
 					<td
@@ -64,10 +64,10 @@
 			<tbody>
 				<tr th:each="emprunt :${empruntsTermines}">
 					<td><img
-						th:src="@{'/uploads/livres/'+${emprunt.livre.nomPhoto}}"
+						th:src="@{'/uploads/livres/'+${emprunt.produitCulturel.nomPhoto}}"
 						height="50px"
 						onerror="this.onerror=null;this.src='/uploads/livres/default-cover.png';"></td>
-					<td th:text="${emprunt.livre.titre}" />
+					<td th:text="${emprunt.produitCulturel.titre}" />
 					<td
 						th:text="${emprunt.personne.nom} +' '+${emprunt.personne.prenom}" />
 					<td
@@ -92,7 +92,6 @@
                         { "orderable": true },
                         { "orderable": true },
                         { "orderable": false },
-                        { "orderable": false },
                         { "orderable": false }
                       ]
         } );
@@ -106,8 +105,7 @@
                         { "orderable": true },
                         { "orderable": true },
                         { "orderable": false },
-                        { "orderable": false },
-                        { "orderable": false }                      ]
+                        { "orderable": true }                    ]
         } );
     } );
 </script>

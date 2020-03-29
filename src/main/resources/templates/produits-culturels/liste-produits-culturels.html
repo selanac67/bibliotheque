@@ -17,7 +17,7 @@
 				Ajouter un livre</a>
 		</p>
 
-		<table id="dtLivres" class="table table-striped table-bordered">
+		<table id="dtProduitsCulturels" class="table table-striped table-bordered">
 			<thead>
 				<tr>
 					<th>Titre</th>
@@ -31,26 +31,26 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="livre :${livresDTO}">
-					<td th:text="${livre.titre}" />
-					<td th:text="${livre.categorie.libelleCategorie}" />
-					<td><img th:src="@{'/uploads/livres/'+${livre.nomPhoto}}"
+				<tr th:each="produitCulturel :${produitsCulturelsDTO}">
+					<td th:text="${produitCulturel.titre}" />
+					<td th:text="${produitCulturel.categorie.libelleCategorie}" />
+					<td><img th:src="@{'/uploads/livres/'+${produitCulturel.nomPhoto}}"
 						height="100px"  onerror="this.onerror=null;this.src='/uploads/livres/default-cover.png';"></td>
-					<td th:text="${#dates.format(livre.dateAjout,'dd-MMM-yyyy')}" />
-										<td th:text="${livre.note}" />	
+					<td th:text="${#dates.format(produitCulturel.dateAjout,'dd-MMM-yyyy')}" />
+										<td th:text="${produitCulturel.note}" />	
 					<td th:remove="${personneSession.estResponsable}? none : all"><a
 						
-						th:href="@{/editLivre(idLivre=${livre.idLivre})}"> <i
+						th:href="@{/editLivre(idLivre=${produitCulturel.idProduit})}"> <i
 							class="far fa-edit fa-2x"></i>
 					</a></td>
 					<td th:remove="${personneSession.estResponsable}? none : all"><a
 						
-						th:href="@{/supprimerLivre(idLivre=${livre.idLivre})}"> <i
+						th:href="@{/supprimerLivre(idLivre=${produitCulturel.idProduit})}"> <i
 							class="far fa-trash-alt fa-2x"></i>
 					</a></td>
 					<td th:remove="${personneSession.estResponsable}? none : all"><a
-						th:if="${personneSession.estResponsable and livre.kEmprunt==false}"
-						th:href="@{/editEmprunt(idLivre=${livre.idLivre})}"> <i
+						th:if="${personneSession.estResponsable and produitCulturel.kEmprunt==false}"
+						th:href="@{/editEmprunt(idLivre=${produitCulturel.idProduit})}"> <i
 							class="fas fa-shopping-cart fa-2x"></i>
 					</a></td>
 				</tr>
@@ -63,7 +63,7 @@
 	
 	<script type="text/javascript" th:remove="${personneSession.estResponsable}? none : all">
     $(document).ready(function() {
-        $('#dtLivres').dataTable( {
+        $('#dtProduitsCulturels').dataTable( {
             "language": {
                 "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
             },
@@ -84,7 +84,7 @@
 
 	<script type="text/javascript" th:remove="${personneSession.estResponsable}? all : none">
     $(document).ready(function() {
-        $('#dtLivres').dataTable( {
+        $('#dtProduitsCulturels').dataTable( {
             "language": {
                 "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
             },

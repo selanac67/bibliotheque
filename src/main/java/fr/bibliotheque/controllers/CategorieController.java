@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import fr.bibliotheque.entities.Categorie;
 import fr.bibliotheque.forms.CategorieForm;
 import fr.bibliotheque.services.CategorieService;
-import fr.bibliotheque.services.LivreService;
+import fr.bibliotheque.services.ProduitCulturelService;
 
 @Controller
 public class CategorieController extends BibliothequeController {
@@ -22,7 +22,7 @@ public class CategorieController extends BibliothequeController {
 	CategorieService categorieService;
 	
 	@Autowired
-	LivreService livreService;
+	ProduitCulturelService livreService;
 	
 
 	@GetMapping("/listeCategories")
