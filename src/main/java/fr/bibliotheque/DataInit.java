@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import fr.bibliotheque.dao.BibliothequeDAO;
 import fr.bibliotheque.dao.CategorieDAO;
 import fr.bibliotheque.dao.EmpruntDAO;
-import fr.bibliotheque.dao.ProduitCulturelDAO;
 import fr.bibliotheque.dao.PersonneDAO;
+import fr.bibliotheque.dao.ProduitCulturelDAO;
 import fr.bibliotheque.entities.Bibliotheque;
 import fr.bibliotheque.entities.Categorie;
 import fr.bibliotheque.entities.Emprunt;
@@ -27,7 +27,7 @@ public class DataInit implements ApplicationRunner {
 	private CategorieDAO categorieDAO;
 
 	@Autowired
-	private ProduitCulturelDAO livreDAO;
+	private ProduitCulturelDAO<Livre> livreDAO;
 
 	@Autowired
 	private EmpruntDAO empruntDAO;

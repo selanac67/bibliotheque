@@ -1,7 +1,5 @@
 package fr.bibliotheque.controllers;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,17 +8,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fr.bibliotheque.entities.EProduitType;
+import fr.bibliotheque.entities.Jeu;
 import fr.bibliotheque.entities.Livre;
+import fr.bibliotheque.entities.ProduitCulturel;
 import fr.bibliotheque.forms.ProduitCulturelForm;
 import fr.bibliotheque.services.CategorieService;
 import fr.bibliotheque.services.EmpruntService;
 import fr.bibliotheque.services.ProduitCulturelService;
 
 @Controller
-public class ProduitCulturelController extends BibliothequeController {
-
-	@Autowired
-	ProduitCulturelService produitCulturelService;
+public  class ProduitCulturelController extends BibliothequeController {
 
 	@Autowired
 	CategorieService categorieService;
@@ -28,81 +26,154 @@ public class ProduitCulturelController extends BibliothequeController {
 	@Autowired
 	EmpruntService empruntService;
 
-	@GetMapping("/listeLivresDTO")
-	public String listerLivresDTO(Model model) {
+	@Autowired
+	ProduitCulturelService produitCulturelService;
+	
+	
+	/**
+	 * Ecrans de listes
+	 * @param model
+	 * @param discriminatorValue
+	 * @return
+	 */
+	@GetMapping("/listerProduitsDTO")
+	public String listerProduitsDTO(Model model, @RequestParam(name = "produitType", required = true) String discriminatorValue) {
 
-		model.addAttribute("produitsCulturelsDTO", produitCulturelService.getLivresDTO());
+		model.addAttribute("produitsCulturelsDTO", produitCulturelService.getProduitCulturelDTO(discriminatorValue));
+		enrichissementModel(model,discriminatorValue);
 
 		return "produits-culturels/liste-produits-culturels";
 	}
 
-	@GetMapping("/editLivre")
-	public String editLivre(@RequestParam(name = "idLivre", required = false) Long idLivre, Model model) {
+	
+	/*
+	 * Ouverture du formulaire d édition
+	 */
+	@GetMapping("/editerProduit")
+	public String editerProduit(Model model, @RequestParam(name = "idProduit", required = false) Long idProduit,
+			@RequestParam(name = "produitType", required = false) String produitTypeDiscriminator) {
 
-		if (idLivre == null) {
-			model.addAttribute("livreForm", new ProduitCulturelForm());
-			model.addAttribute("newLivre", true);
-
+		
+		ProduitCulturelForm produitForm = new ProduitCulturelForm();
+		
+		if (idProduit == null) {
+			produitForm.setProduitType(produitTypeDiscriminator);
+			model.addAttribute("newProduit", true);
 		} else {
+			
+			ProduitCulturel produit = produitCulturelService.getProduit(idProduit);
+			produitForm.setIdProduitForm(idProduit);
+			produitForm.setIdCategorie(produit.getCategorie().getIdCategorie());
+			produitForm.setTitre(produit.getTitre());
+			produitForm.setNomPhoto(produit.getNomPhoto());
+			produitForm.setNote(produit.getNote());
+			produitForm.setProduitType(produit.getProduitType());
 
-			Livre livre = produitCulturelService.getLivre(idLivre);
-
-			ProduitCulturelForm livreForm = new ProduitCulturelForm();
-			livreForm.setIdProduitForm(idLivre);
-			livreForm.setIdCategorie(livre.getCategorie().getIdCategorie());
-			livreForm.setTitre(livre.getTitre());
-			livreForm.setNomPhoto(livre.getNomPhoto());
-			livreForm.setNote(livre.getNote());
-
-			model.addAttribute("livreForm", livreForm);
-			model.addAttribute("newLivre", false);
+			model.addAttribute("newProduit", false);
 
 		}
+		
+		model.addAttribute("produitForm", produitForm);
 
 		model.addAttribute("categories", categorieService.getListeCategories());
+
+		enrichissementModel(model,produitForm.getProduitType());
 
 		return "produits-culturels/edit-produits-culturels";
 	}
 
-	@PostMapping("/sauverLivre")
-	public String sauverLivre(Model model, @ModelAttribute("livreForm") ProduitCulturelForm livreForm)
-			throws IllegalStateException, IOException {
+	/**
+	 * SAuvegarde en base du formulaire d'édition
+	 * @param model
+	 * @param produitForm
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/sauverProduit")
+	public String sauverProduit(Model model,
+			@ModelAttribute("produitForm") ProduitCulturelForm produitForm)
+			throws Exception {
 
-		Livre livre = new Livre();
-		livre.setCategorie(categorieService.getCategorie(livreForm.getIdCategorie()));
-		livre.setTitre(livreForm.getTitre());
-		livre.setNote(livreForm.getNote());
+		ProduitCulturel produitASauver;
 
-		if (livreForm.getIdProduitForm() == null) {
-			produitCulturelService.enregistrerNouveauLivre(livre, livreForm.getInputImage());
+		String produitType =produitForm.getProduitType();
+		
+		if (produitType.equals(EProduitType.J.getDiscriminatorValue())) {
+			produitASauver = new Jeu();
+		} else if (produitType.equals(EProduitType.L.L.getDiscriminatorValue())) {
+			produitASauver = new Livre();
+
 		} else {
-			livre.setDateAjout(produitCulturelService.getLivre(livreForm.getIdProduitForm()).getDateAjout());
-			livre.setIdProduit(livreForm.getIdProduitForm());
-			livre.setNomPhoto(livreForm.getNomPhoto());
-			produitCulturelService.majProduitCulturel(livre);
+			throw new Exception("Type de produit inconnu");
 		}
 
-		// Refresh de la liste des livres
-		model.addAttribute("produitsCulturelsDTO", produitCulturelService.getLivresDTO());
+		produitASauver.setCategorie(categorieService.getCategorie(produitForm.getIdCategorie()));
+		produitASauver.setTitre(produitForm.getTitre());
+		produitASauver.setNote(produitForm.getNote());
+
+		if (produitForm.getIdProduitForm() == null) {
+			produitCulturelService.enregistrerNouveauProduit(produitASauver, produitForm.getInputImage());
+		} else {
+			produitASauver
+					.setDateAjout(produitCulturelService.getProduit(produitForm.getIdProduitForm()).getDateAjout());
+			produitASauver.setIdProduit(produitForm.getIdProduitForm());
+			produitASauver.setNomPhoto(produitForm.getNomPhoto());
+			produitCulturelService.majProduitCulturel(produitASauver);
+		}
+
+		enrichissementModel(model,produitType);
+		// Refresh de la liste des produits
+		model.addAttribute("produitsCulturelsDTO",
+				produitCulturelService.getProduitCulturelDTO(produitType));
 
 		return "produits-culturels/liste-produits-culturels";
 	}
+	
+	@GetMapping("/supprimerProduit")
+	public String supprimerProduit(@RequestParam(name = "idProduit", required = true) Long idProduit, Model model) {
 
-	@GetMapping("/supprimerLivre")
-	public String supprimerLivre(@RequestParam(name = "idLivre", required = true) Long idLivre, Model model) {
-
-		Livre livreASupprimer = produitCulturelService.getLivre(idLivre);
+		ProduitCulturel pcASupprimer = produitCulturelService.getProduit(idProduit);
+		String infoMessage = new String();
 
 		// Vérification que le livre n'est pas emprunté
-		if (empruntService.isEmpruntEnCours(livreASupprimer)) {
-			model.addAttribute("infoMessage", "Suppression impossible : le livre est en cours d'emprunt...");
+		if (empruntService.isEmpruntEnCours(pcASupprimer)) {
+			infoMessage= "Suppression impossible : l'objet est en cours d'emprunt...";
 		} else {
-			produitCulturelService.supprimerProduitCulturel(livreASupprimer);
+			
+			try {
+				produitCulturelService.supprimerProduitCulturel(pcASupprimer);
+			} catch (Exception e) {
+				infoMessage= "Suppression impossible : il se peut que l'objet ait déjà été emprunté au moins une fois...";
+			}
 		}
 
-		model.addAttribute("livresDTO", produitCulturelService.getLivresDTO());
+		if(infoMessage.length()==0) {
+			infoMessage="Suppression du livre "+ pcASupprimer.getTitre()+" réalisée !";
+		}
+		
+		model.addAttribute("infoMessage",infoMessage );
 
+		
+		//refresh liste produit culturel
+		model.addAttribute("produitsCulturelsDTO", produitCulturelService.getProduitCulturelDTO(EProduitType.L.getDiscriminatorValue()));
+
+		enrichissementModel(model,pcASupprimer.getProduitType());
+	
 		return "produits-culturels/liste-produits-culturels";
+	}	
+	
+	
+	
+	
+
+	public void enrichissementModel(Model model, String produitTypeDiscriminator) {
+		
+		
+		EProduitType eTypeProduit = EProduitType.valueOf(produitTypeDiscriminator);
+		
+		model.addAttribute("produitTypeDiscriminator", eTypeProduit.getDiscriminatorValue());
+		model.addAttribute("produitTypePluriel", eTypeProduit.getNomCourtPluriel());
+		model.addAttribute("produitTypeSingulier", eTypeProduit.getNomCourtSingulier());
 	}
 
 }

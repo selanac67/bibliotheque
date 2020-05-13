@@ -8,12 +8,13 @@
 		<nav th:replace="fragments/general.html :: navigation" />
 
 		<h2
-			th:text="${newLivre} ? 'Ajouter un nouveau livre' : 'Modifier le livre' " />
+			th:text="${newProduit} ? 'Ajouter un nouveau '+${produitTypeSingulier}+' ': 'Modifier le '+${ProduitTypeSingulier}+' ' " />
 
-		<form th:action="@{/sauverLivre}" th:object="${livreForm}"
+		<form th:action="@{/sauverProduit}" th:object="${produitForm}"
 			method="post" enctype="multipart/form-data">
 			<p>
-				<label> Titre du livre : <input type="text"
+				<label> Titre du xxx : 
+				<input type="text"
 					th:field="*{titre}" />
 
 				</label>
@@ -35,23 +36,27 @@
 						</select>
 			</p>
 
-			<p th:remove="${newLivre}? none : all">
+			<p th:remove="${newProduit}? none : all">
 				Ajouter une image <input id="inputImage" name="inputImage"
 					type="file" accept="image/*">
 			</p>
 
-			<p th:remove="${newLivre}? all : none">
+			<p th:remove="${newProduit}? all : none">
 				Image (non modifiable) <img
-					th:src="@{'/uploads/livres/'+*{nomPhoto}}" / width="100px">
+					th:src="@{'/uploads/'+${ProduitTypePluriel}+'/'+*{nomPhoto}}" / width="100px">
 
 
 			</p>
 
 			<p>
 				<input type="submit" value="Valider"> <input type="hidden"
-					th:remove="${newLivre}? all : none" th:field="*{idProduitForm}">
-				<input type="hidden" th:remove="${newLivre}? all : none"
+					th:remove="${newProduit}? all : none" th:field="*{idProduitForm}">
+				<input type="hidden" th:remove="${newProduit}? all : none"
 					th:field="*{nomPhoto}">
+                 <input type="hidden" 
+                 th:value="${produitTypeDiscriminator}"
+                 					th:field="*{produitType}" />
+                 
 
 			</p>
 		</form>

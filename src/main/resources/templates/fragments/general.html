@@ -41,7 +41,7 @@
 	  <div class="collapse navbar-collapse" id="navbarNav">
 	    <ul class="navbar-nav">
 	      <li class="nav-item active"> 	
-	        <a class="nav-link" href="/listeLivresDTO">
+	        <a class="nav-link" href="/listerProduitsDTO?produitType=L">
 	        <i class="fas fa-book"></i>
 	        Livres<span class="sr-only">(current)</span>
 	        </a>
@@ -49,7 +49,7 @@
 	      </li>
 	      
 	      <li class="nav-item active"> 	
-	        <a class="nav-link" href="/listeJeuxDTO">
+	        <a class="nav-link" href="/listerProduitsDTO?produitType=J">
 	        <i class="fas fa-dice"></i>
 	        Jeux<span class="sr-only">(current)</span>
 	        </a>
@@ -57,13 +57,13 @@
 	      </li>
 	      
 	      <li class="nav-item active" th:remove="${personneSession.estResponsable} ? none : all" >
-	        <a class="nav-link" href="/listeCategories">
+	        <a class="nav-link" href="/listerCategories">
 	        <i class="fas fa-socks"></i>
 	        Categories
 	        </a>
 	      </li>
 	      <li class="nav-item active" th:remove="${personneSession.estResponsable} ? none : all">
-	        <a class="nav-link" href="/listePersonnes">
+	        <a class="nav-link" href="/listerPersonnes">
 	        <i class="far fa-user-circle"></i>
 	        Membres</a>
 	      </li>

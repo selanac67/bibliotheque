@@ -12,7 +12,7 @@ public class EmpruntForm {
 		return idProduit;
 	}
 
-	public void setIdLivre(Long idProduit) {
+	public void setIdProduit(Long idProduit) {
 		this.idProduit = idProduit;
 	}
 

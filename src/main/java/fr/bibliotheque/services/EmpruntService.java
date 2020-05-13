@@ -11,6 +11,7 @@ import fr.bibliotheque.dao.EmpruntDAO;
 import fr.bibliotheque.entities.Emprunt;
 import fr.bibliotheque.entities.Livre;
 import fr.bibliotheque.entities.Personne;
+import fr.bibliotheque.entities.ProduitCulturel;
 
 @Service
 public class EmpruntService {
@@ -91,12 +92,12 @@ public class EmpruntService {
 		empruntDAO.save(emprunt);
 	}
 	
-	public boolean isEmpruntEnCours(Livre livre){
+	public boolean isEmpruntEnCours(ProduitCulturel pc){
 		
 		boolean kEmpruntEnCours=false;
 		
 		List<Emprunt> lstEmprunt=
-		empruntDAO.findByProduitCulturelAndDateFinEmpruntIsNull(livre);
+		empruntDAO.findByProduitCulturelAndDateFinEmpruntIsNull(pc);
 		
 		if(lstEmprunt.size()>0){
 			kEmpruntEnCours=true;

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import fr.bibliotheque.entities.Categorie;
 import fr.bibliotheque.forms.CategorieForm;
 import fr.bibliotheque.services.CategorieService;
-import fr.bibliotheque.services.ProduitCulturelService;
 
 @Controller
 public class CategorieController extends BibliothequeController {
@@ -21,20 +20,16 @@ public class CategorieController extends BibliothequeController {
 	@Autowired
 	CategorieService categorieService;
 	
-	@Autowired
-	ProduitCulturelService livreService;
-	
 
-	@GetMapping("/listeCategories")
+	@GetMapping("/listerCategories")
     public String listerCategories(Model model) {
       		
 		model.addAttribute("categories", categorieService.getListeCategories());
-	
 		return "categories/liste-categories";        
     }
 	
-	@GetMapping("/editCategorie")
-    public String editCategorie(
+	@GetMapping("/editerCategorie")
+    public String editerCategorie(
     		@RequestParam(name="idCategorie", required=false) Long idCategorie,
     		Model model) {
 		

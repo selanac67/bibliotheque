@@ -9,7 +9,7 @@
 
 <h2>Liste des membres</h2>
 
-<p><a href="/editPersonne?newPersonne=true"><i class="fas fa-plus-square"></i>Ajouter une personne</a></p>
+<p><a href="/editerPersonne?newPersonne=true"><i class="fas fa-plus-square"></i>Ajouter une personne</a></p>
 
 <table class="table table-striped">
             <thead>
@@ -28,7 +28,7 @@
                    <td th:text="${personne.nom}" />
                    <td th:text="${personne.prenom}" />                   
                    <td><i th:if="${personne.estResponsable}" class="fas fa-crown"></i></td>
-                   <td><a th:href="@{/editPersonne(idPersonne=${personne.idPersonne})}">
+                   <td><a th:href="@{/editerPersonne(idPersonne=${personne.idPersonne})}">
 					<i class="far fa-edit fa-2x"></i>
 					</a></td>
 				</tr>

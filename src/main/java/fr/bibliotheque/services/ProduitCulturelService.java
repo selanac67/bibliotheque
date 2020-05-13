@@ -22,69 +22,52 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.bibliotheque.dao.ProduitCulturelDAO;
 import fr.bibliotheque.dto.ProduitCulturelDTO;
-import fr.bibliotheque.entities.Jeu;
-import fr.bibliotheque.entities.Livre;
 import fr.bibliotheque.entities.ProduitCulturel;
 import storage.FileSystemStorageService;
 
 @Service
-public class ProduitCulturelService {
+public class ProduitCulturelService<T extends ProduitCulturel> {
 
+	
 	@Autowired
-	private ProduitCulturelDAO<Livre> livreDAO;
-
-	@Autowired
-	private ProduitCulturelDAO<Jeu> jeuDAO;
-
-	@Autowired
-	private ProduitCulturelDAO<ProduitCulturel> pcDAO;
+	private ProduitCulturelDAO<T> pcDAO;
 
 	@Autowired
 	FileSystemStorageService fsStorageService;
 
-	public Optional<ProduitCulturel> getProduitCulturel(Long idProduit) {
+	public Optional<T> getProduitCulturel(Long idProduit) {
 
 		return pcDAO.findById(idProduit);
 
 	}
+	
 
-	public List<Livre> getListeLivres() {
+	public  List<ProduitCulturelDTO> getProduitCulturelDTO(String discriminatorValue) {
 
-		List<Livre> livres = new ArrayList<>();
+		List<ProduitCulturelDTO> produitsDTO = new ArrayList<>();
+		
+		List<T> produits = (List<T>) pcDAO.findByProduitType(discriminatorValue);
+		
 
-		Iterable<Livre> iterLivre = livreDAO.findAll();
-		iterLivre.forEach(livres::add);
-
-		return livres;
-	}
-
-	public List<ProduitCulturelDTO> getLivresDTO() {
-
-		List<ProduitCulturelDTO> livresDTO = new ArrayList<>();
-		List<Livre> livres = new ArrayList<>();
-
-		Iterable<Livre> iterLivre = livreDAO.findAll();
-		iterLivre.forEach(livres::add);
-
-		for (Livre livre : livres) {
-			livresDTO.add(new ProduitCulturelDTO(livre));
+		for (T pc : produits) {
+			produitsDTO.add(new ProduitCulturelDTO(pc));
 		}
-		return livresDTO;
+		return produitsDTO;
 	}
 
-	public Livre getLivre(Long idLivre) {
+	public T getProduit(Long idProduit) {
 
-		Optional<Livre> livre = livreDAO.findById(idLivre);
+		Optional<T> produit = (Optional<T>) pcDAO.findById(idProduit);
 
-		return livre.isPresent() ? livre.get() : new Livre();
+		return produit.isPresent() ? produit.get() :null;
 	}
 
-	public void enregistrerNouveauLivre(Livre livre, MultipartFile inputImageFile)
+	public void enregistrerNouveauProduit(T  produitCulturel, MultipartFile inputImageFile)
 			throws IllegalStateException, IOException {
 
 		InputStream isInputImage = null;
 
-		// Gestion de l upload de la photo dans le cas d'un nouveau livre
+		// Gestion de l upload de la photo dans le cas d'un nouveau produit
 		if (inputImageFile.getSize() > 0) {
 			isInputImage = inputImageFile.getInputStream();
 
@@ -104,21 +87,21 @@ public class ProduitCulturelService {
 			resizeImage(isInputImage, destFile);
 
 			// Sauvegarde en base de l'objet livre
-			livre.setNomPhoto(timestampedFileName);
+			produitCulturel.setNomPhoto(timestampedFileName);
 
 		}
 
-		livre.setDateAjout(new java.util.Date());
-
-		livreDAO.save(livre);
-	}
-
-	public void majProduitCulturel(ProduitCulturel produitCulturel) {
+		produitCulturel.setDateAjout(new java.util.Date());
 
 		pcDAO.save(produitCulturel);
 	}
 
-	public void supprimerProduitCulturel(ProduitCulturel produitCulturel) {
+	public void majProduitCulturel(T produitCulturel) {
+
+		pcDAO.save(produitCulturel);
+	}
+
+	public void supprimerProduitCulturel(T produitCulturel) {
 
 		String nomPhoto = produitCulturel.getNomPhoto();
 

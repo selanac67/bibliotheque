@@ -12,8 +12,6 @@ public class StaticResourceConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/uploads/**")
         .addResourceLocations("file:/Users/selanac/Documents/bibliotheque/uploads/");
     }
-
-
    
 }
 

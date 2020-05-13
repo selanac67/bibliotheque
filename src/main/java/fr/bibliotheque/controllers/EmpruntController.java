@@ -26,7 +26,7 @@ public class EmpruntController extends BibliothequeController {
 	EmpruntService empruntService;
 
 	@Autowired
-	ProduitCulturelService produitCulturelService;
+	ProduitCulturelService<ProduitCulturel> produitCulturelService;
 
 	@Autowired
 	PersonneService personneService;
@@ -70,16 +70,16 @@ public class EmpruntController extends BibliothequeController {
 	}
 
 	// Fonction d'admin
-	@GetMapping("/editEmprunt")
-	public String editEmprunt(Model model,
-			@RequestParam(name = "idLivre", required = true) Long idLivre) {
+	@GetMapping("/editerEmprunt")
+	public String editerEmprunt(Model model,
+			@RequestParam(name = "idProduit", required = true) Long idProduit) {
 
 		EmpruntForm empruntForm = new EmpruntForm();
 
 		// Cas de l'appel par un responsable		
-		Livre livreAEmprunter = produitCulturelService.getLivre(idLivre);
-		empruntForm.setIdLivre(idLivre);
-		empruntForm.setTitre(livreAEmprunter.getTitre());
+		ProduitCulturel produitCulturelAEmprunter = produitCulturelService.getProduit(idProduit);
+		empruntForm.setIdProduit(idProduit);
+		empruntForm.setTitre(produitCulturelAEmprunter.getTitre());
 		model.addAttribute("empruntForm", empruntForm);
 
 		List<Personne> personnes = personneService.getListePersonnes();
@@ -89,8 +89,8 @@ public class EmpruntController extends BibliothequeController {
 	}
 
 	// Fonction d'admin
-	@GetMapping("/retournerLivre")
-	public String retournerLivre(Model model, @RequestParam(name = "idEmprunt", required = true) Long idEmprunt,
+	@GetMapping("/retournerEmprunt")
+	public String retournerEmprunt(Model model, @RequestParam(name = "idEmprunt", required = true) Long idEmprunt,
 			@SessionAttribute("personneSession") Personne personneSession) throws IllegalStateException {
 
 		Emprunt empruntTermine = empruntService.getEmprunt(idEmprunt);

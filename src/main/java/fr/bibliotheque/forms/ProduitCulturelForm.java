@@ -8,6 +8,8 @@ public class ProduitCulturelForm {
 	
 	private Long idProduit;	
 	
+	private String produitType;
+	
 	private Integer note;
 	
 	private String nomPhoto;
@@ -69,6 +71,15 @@ public class ProduitCulturelForm {
 	public void setNote(Integer note) {
 		this.note = note;
 	}
+
+	public String getProduitType() {
+		return produitType;
+	}
+
+	public void setProduitType(String produitType) {
+		this.produitType = produitType;
+	}
+
 
 
 

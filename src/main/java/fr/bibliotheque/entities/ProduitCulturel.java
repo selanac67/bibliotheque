@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,7 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PRODUIT_CULTUREL")
 @DiscriminatorColumn(name = "PRODUIT_TYPE")
-public class ProduitCulturel implements Serializable {
+public  class ProduitCulturel implements Serializable {
 
 	/**
 	 * 
@@ -30,6 +31,9 @@ public class ProduitCulturel implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long idProduit;
+
+	@Column(name = "produit_type", insertable = false, updatable = false)
+	protected String produitType;
 
 	private String titre;
 
@@ -109,6 +113,10 @@ public class ProduitCulturel implements Serializable {
 
 	public void setDateAjout(Date dateAjout) {
 		this.dateAjout = dateAjout;
+	}
+
+	public String getProduitType() {
+		return produitType;
 	}
 
 }

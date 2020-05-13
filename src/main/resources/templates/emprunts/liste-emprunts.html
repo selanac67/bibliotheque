@@ -37,7 +37,7 @@
 
 					<td><span
 						th:remove="${personneSession.estResponsable}? none : all">
-							<a th:href="@{/retournerLivre(idEmprunt=${emprunt.idEmprunt})}">
+							<a th:href="@{/retournerEmprunt(idEmprunt=${emprunt.idEmprunt})}">
 								<i class="far fa-undo fa-2x"></i>
 						</a>
 					</span></td>

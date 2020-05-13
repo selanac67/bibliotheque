@@ -22,7 +22,7 @@ public class PersonneController  extends BibliothequeController {
 	@Autowired
 	PersonneService personneService;
 	
-	@GetMapping("/listePersonnes")
+	@GetMapping("/listerPersonnes")
     public String listerPersonnes(Model model) {
       		
 		model.addAttribute("personnes", personneService.getListePersonnes());
@@ -30,7 +30,7 @@ public class PersonneController  extends BibliothequeController {
 		return "personnes/liste-personnes";        
     }
 	
-	@GetMapping("/editPersonne")
+	@GetMapping("/editerPersonne")
     public String editPersonne(
     		@RequestParam(name="idPersonne", required=false) Long idPersonne,
     		Model model) {

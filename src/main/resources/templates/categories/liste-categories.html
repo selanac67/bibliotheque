@@ -12,7 +12,7 @@
 		<h2>Liste des categories</h2>
 
 		<p>
-			<a href="/editCategorie?new=true"> <i class="fas fa-plus-square"></i>
+			<a href="/editerCategorie?new=true"> <i class="fas fa-plus-square"></i>
 				Ajouter une catégorie
 			</a>
 		</p>
@@ -32,7 +32,7 @@
 					<td th:text="${categorie.libelleCategorie}" />
 					<td><a
 						th:remove="${personneSession.estResponsable}? none : all"
-						th:href="@{/editCategorie(idCategorie=${categorie.idCategorie})}">
+						th:href="@{/editerCategorie(idCategorie=${categorie.idCategorie})}">
 							<i class="far fa-edit fa-2x"></i>
 					</a></td>
 					<td><a

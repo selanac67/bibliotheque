@@ -8,6 +8,18 @@ import javax.persistence.Entity;
 public class Livre extends ProduitCulturel{
 
 	private static final long serialVersionUID = -6005777793849549630L;
+	
+	private Integer nbPages;
+
+	public Integer getNbPages() {
+		return nbPages;
+	}
+
+	public void setNbPages(Integer nbPages) {
+		this.nbPages = nbPages;
+	}
+	
+	
 
 	
 }
